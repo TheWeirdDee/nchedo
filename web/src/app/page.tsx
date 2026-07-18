@@ -24,12 +24,21 @@ export default function LandingPage() {
     return () => lenis.destroy();
   }, []);
 
+  const handleConnect = () => {
+    const conn = connectors[0];
+    if (!conn) {
+      alert("No wallet connector found. Please install MetaMask and try again.");
+      return;
+    }
+    connect({ connector: conn });
+  };
+
   const primary = isConnected ? (
     <Link href="/create" className="btn btn-brass !px-8 !py-3">
       Build a vault
     </Link>
   ) : (
-    <button className="btn btn-brass !px-8 !py-3" onClick={() => connect({ connector: connectors[0] })}>
+    <button className="btn btn-brass !px-8 !py-3" onClick={handleConnect}>
       Connect wallet
     </button>
   );
@@ -148,7 +157,7 @@ export default function LandingPage() {
       </div>
 
       {/* ---- the problem ---- */}
-      <section id="problem" className="scroll-mt-20 mx-auto w-full max-w-6xl px-5 sm:px-8 pt-12 md:pt-16 lg:pt-20 pb-14 md:pb-24 lg:pb-32 grid grid-cols-1 lg:grid-cols-[1fr_1.05fr] gap-10 lg:gap-16 lg:items-center">
+      <section id="problem" className="scroll-mt-20 mx-auto w-full max-w-6xl px-5 sm:px-8 pt-12 md:pt-16 lg:pt-20 pb-4 md:pb-8 lg:pb-10 grid grid-cols-1 lg:grid-cols-[1fr_1.05fr] gap-10 lg:gap-16 lg:items-center">
         <div>
           <Reveal>
             <h2
@@ -221,7 +230,7 @@ export default function LandingPage() {
 
       {/* ---- how it works ---- */}
       <section id="how" className="scroll-mt-20">
-        <div className="mx-auto w-full max-w-6xl px-5 sm:px-8 py-10 md:py-16 lg:py-20">
+        <div className="mx-auto w-full max-w-6xl px-5 sm:px-8 pt-4 md:pt-8 lg:pt-10 pb-10 md:pb-16 lg:pb-20">
           <Reveal>
             <h2
               className="font-[family-name:var(--font-display)] font-extrabold tracking-tighter leading-[1.02] text-balance max-w-[24ch]"

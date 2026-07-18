@@ -18,6 +18,15 @@ export default function PanelPage() {
   const { connect, connectors } = useConnect();
   const { switchChain } = useSwitchChain();
 
+  const handleConnect = () => {
+    const conn = connectors[0];
+    if (!conn) {
+      alert("No wallet connector found. Please install MetaMask and try again.");
+      return;
+    }
+    connect({ connector: conn });
+  };
+
   const v = useVault(address);
   const rows = useTimeline(v.vault, v.bait);
 
@@ -54,7 +63,7 @@ export default function PanelPage() {
       ) : !isConnected ? (
         <Center>
           <p className="text-[13px] text-bone-dim mb-4">Connect a wallet to see your vault.</p>
-          <button className="btn btn-brass" onClick={() => connect({ connector: connectors[0] })}>
+          <button className="btn btn-brass" onClick={handleConnect}>
             Connect wallet
           </button>
         </Center>

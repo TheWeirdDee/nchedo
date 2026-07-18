@@ -18,6 +18,15 @@ export function Header() {
 
   const locked = v.state === "locked";
 
+  const handleConnect = () => {
+    const conn = connectors[0];
+    if (!conn) {
+      alert("No wallet connector found. Please install MetaMask and try again.");
+      return;
+    }
+    connect({ connector: conn });
+  };
+
   return (
     <header className="shrink-0 flex items-center gap-4 px-5 h-14 border-b border-brass/25 bg-enamel-lo/60">
       <Link href="/" className="flex items-center gap-2.5">
@@ -62,7 +71,7 @@ export function Header() {
             {short(address)}
           </button>
         ) : (
-          <button className="btn btn-brass !py-1.5" onClick={() => connect({ connector: connectors[0] })}>
+          <button className="btn btn-brass !py-1.5" onClick={handleConnect}>
             Connect
           </button>
         )}

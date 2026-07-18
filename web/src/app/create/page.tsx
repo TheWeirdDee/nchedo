@@ -16,6 +16,15 @@ export default function CreatePage() {
   const wrongChain = isConnected && chainId !== monad.id;
   const configured = FACTORY_ADDRESS !== "0x0000000000000000000000000000000000000000";
 
+  const handleConnect = () => {
+    const conn = connectors[0];
+    if (!conn) {
+      alert("No wallet connector found. Please install MetaMask and try again.");
+      return;
+    }
+    connect({ connector: conn });
+  };
+
   return (
     <main className="h-dvh flex flex-col overflow-hidden">
       <Header />
@@ -30,7 +39,7 @@ export default function CreatePage() {
       ) : !isConnected ? (
         <Center>
           <p className="text-[13px] text-bone-dim mb-4">Connect a wallet to build a vault.</p>
-          <button className="btn btn-brass" onClick={() => connect({ connector: connectors[0] })}>
+          <button className="btn btn-brass" onClick={handleConnect}>
             Connect wallet
           </button>
         </Center>
