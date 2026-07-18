@@ -9,6 +9,7 @@ node_modules/
 web/.next/
 web/out/
 web/.vercel/
+*.tsbuildinfo
 
 contracts/out/
 contracts/cache/
