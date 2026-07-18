@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import type { Configuration } from "webpack";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -8,7 +7,7 @@ const nextConfig: NextConfig = {
   // ships broken/partial JS chunks — the page then never hydrates and every
   // button is dead. Disabling the cache trades slower rebuilds for correct,
   // fully-emitted chunks.
-  webpack: (config: Configuration) => {
+  webpack: (config) => {
     config.cache = false;
     return config;
   },
