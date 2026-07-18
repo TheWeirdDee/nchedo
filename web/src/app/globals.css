@@ -15,7 +15,9 @@
   --color-enamel-lo: #0e1a14;
   --color-bone: #dedccf;
   --color-bone-dim: #a8a99b;
-  --color-steel: #6e7a73;
+  /* Lifted from #6e7a73 so label/helper text clears WCAG AA (4.5:1) on every
+     panel surface. Steel is for labels; body copy uses bone / bone-dim. */
+  --color-steel: #8f9b94;
   --color-brass: #b08d3f;
   --color-brass-hi: #d9b45f;
   --color-oxide: #c0402a;
@@ -185,7 +187,7 @@ body {
 }
 
 .field::placeholder {
-  color: #4a564f;
+  color: #7d8a83;
 }
 
 *:focus-visible {

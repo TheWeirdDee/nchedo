@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { parseEther, isAddress } from "viem";
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { vaultAbi } from "@/lib/abi";
@@ -141,9 +142,9 @@ export function VaultPanel(p: Props) {
                 </button>
               </div>
             ) : (
-              <p className="eyebrow !text-steel/60 normal-case tracking-normal">
-                Connect the recovery wallet to sweep.
-              </p>
+              <Link href={`/recovery?vault=${p.vault}`} className="btn btn-oxide w-full text-center">
+                Open recovery console
+              </Link>
             )}
           </div>
         ) : (

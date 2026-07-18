@@ -151,6 +151,14 @@ export function AttackerConsole({
         <div className="datum text-[11px] text-brass-hi">{mon(reward, 3)} MON · instant</div>
       </div>
 
+      <div className="border-l-2 border-oxide bg-oxide/10 px-3 py-2 mb-3">
+        <p className="text-[11px] text-oxide-hi leading-relaxed">
+          <span className="font-semibold">Attacker console — demo only.</span> Paste a Nchedo{" "}
+          <span className="text-bone">canary</span> key, which is sacrificial and meant to be public. Never
+          paste a real wallet key into any website, including this one.
+        </p>
+      </div>
+
       <p className="text-[12px] text-bone-dim leading-relaxed mb-3">
         The canary key is in a .env somewhere. Paste it and take the {mon(reward, 2)} MON — no delay, no
         approval, no catch you can see from here. The vault above waits {""}

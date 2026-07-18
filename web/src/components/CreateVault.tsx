@@ -5,7 +5,7 @@ import { parseEther, isAddress } from "viem";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { factoryAbi } from "@/lib/abi";
-import { FACTORY_ADDRESS } from "@/lib/format";
+import { FACTORY_ADDRESS, short, delayLabel as fmtDelay } from "@/lib/format";
 import { Mark } from "./Mark";
 
 const DELAYS = [
@@ -13,6 +13,16 @@ const DELAYS = [
   { label: "15 min", value: 900, note: "default" },
   { label: "1 hour", value: 3600, note: "careful" },
 ];
+
+function CostRow({ label, value }: { label: string; value: string }) {
+  const n = Number(value);
+  return (
+    <div className="flex items-baseline justify-between px-3 py-2">
+      <span className="text-[11px] text-bone-dim">{label}</span>
+      <span className="datum text-[11px] text-bone">{Number.isFinite(n) ? n.toFixed(3) : "—"} MON</span>
+    </div>
+  );
+}
 
 export function CreateVault({ onDone }: { onDone: () => void }) {
   const [canaryKey] = useState<`0x${string}`>(() => generatePrivateKey());
@@ -31,6 +41,10 @@ export function CreateVault({ onDone }: { onDone: () => void }) {
   const canaryGas = parseEther("0.06");
   const valid =
     isAddress(recovery) && Number(amount) > 0 && Number(baitAmount) > 0 && Number(baitAmount) < Number(amount);
+
+  const totalValid = Number(amount) > 0 && Number(baitAmount) > 0;
+  const total = Number(amount) + Number(baitAmount) + 0.06;
+  const delayLabel = fmtDelay(delay);
 
   const envBlock = `VAULT_OWNER_KEY=<your deploy key>\nCANARY_KEY=${canaryKey}`;
 
@@ -147,6 +161,26 @@ export function CreateVault({ onDone }: { onDone: () => void }) {
             You get its private key after the vault exists. Nothing legitimate will ever sign with it, which
             is why a single signature from it is proof rather than a guess.
           </p>
+        </div>
+
+        {/* What this transaction actually costs — the canary gas is on top of
+            the reserve and the bait, which is easy to miss. */}
+        <div className="border border-brass/30 divide-y divide-brass/15">
+          <div className="eyebrow px-3 py-2 !text-bone-dim bg-enamel-hi/40">You are creating</div>
+          <CostRow label="Reserve — slow money" value={amount} />
+          <CostRow label="Bait — instant reward" value={baitAmount} />
+          <CostRow label="Canary gas — so a thief can spend" value="0.06" />
+          <div className="flex items-baseline justify-between px-3 py-2.5">
+            <span className="datum text-[11px] text-bone">Total to send</span>
+            <span className="datum text-[12px] text-brass-hi font-semibold">
+              {totalValid ? `${total.toFixed(3)} MON` : "—"}
+            </span>
+          </div>
+          <div className="flex items-baseline justify-between px-3 py-2 text-[10px]">
+            <span className="eyebrow !text-steel normal-case tracking-normal">
+              Delay {delayLabel} · recovery {recovery && isAddress(recovery) ? short(recovery) : "not set"}
+            </span>
+          </div>
         </div>
 
         {error && (

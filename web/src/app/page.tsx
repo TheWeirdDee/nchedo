@@ -182,14 +182,14 @@ export default function LandingPage() {
                 <TapeRow time="03:11:07" text="drained" amount="4.982 MON" alarm bold />
               </div>
               <p className="text-[11px] text-steel px-4 py-2.5 border-t border-brass/20">
-                Three seconds. Bots watch every push for keys.
+                Leaked keys get swept within seconds — bots watch public pushes for them.
               </p>
             </div>
           </Reveal>
           <Reveal delay={220}>
             <div className="panel">
               <div className="px-4 py-2.5 border-b border-brass/20">
-                <span className="eyebrow !text-brass-hi">the same leak, with nchedo</span>
+                <span className="eyebrow !text-brass-hi">nchedo · attacker grabs the bait</span>
               </div>
               <div className="tape px-4 py-2">
                 <TapeRow time="03:11:07" text="bait taken" amount="0.100 MON" alarm />
@@ -198,6 +198,21 @@ export default function LandingPage() {
               </div>
               <p className="text-[11px] text-steel px-4 py-2.5 border-t border-brass/20">
                 The thief keeps 0.100 MON. That was always the price of the alarm.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={300}>
+            <div className="panel">
+              <div className="px-4 py-2.5 border-b border-brass/20">
+                <span className="eyebrow !text-brass-hi">nchedo · attacker ignores the bait</span>
+              </div>
+              <div className="tape px-4 py-2">
+                <TapeRow time="03:11:07" text="withdrawal requested" amount="4.900 MON" />
+                <TapeRow time="03:11:20" text="owner sees it — 15-min public window" />
+                <TapeRow time="03:12:04" text="swept by recovery key" amount="4.900 MON" safe />
+              </div>
+              <p className="text-[11px] text-steel px-4 py-2.5 border-t border-brass/20">
+                The canary never fires here. The delay is what buys the time — someone has to use it.
               </p>
             </div>
           </Reveal>
@@ -397,6 +412,47 @@ export default function LandingPage() {
         </Reveal>
       </section>
 
+      {/* ---- the security boundary ---- */}
+      <section className="mx-auto w-full max-w-6xl px-5 sm:px-8 py-16 lg:py-20">
+        <Reveal>
+          <h2
+            className="font-[family-name:var(--font-display)] font-extrabold tracking-tighter leading-[1.02] text-balance max-w-[24ch]"
+            style={{ fontSize: "clamp(1.75rem, 3.4vw, 2.6rem)" }}
+          >
+            What it guarantees, and what it does not.
+          </h2>
+          <p className="text-[13px] text-bone-dim mt-4 max-w-[56ch] leading-relaxed">
+            Both columns are provable, and both are in the test suite. A security tool that only lists its
+            wins is one you can&apos;t trust with the losses.
+          </p>
+
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="panel p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="lamp lamp-armed" />
+                <span className="eyebrow !text-sap">Nchedo guarantees</span>
+              </div>
+              <ul className="space-y-3">
+                <Boundary good>A leaked owner key cannot drain the vault instantly — every withdrawal matures in public.</Boundary>
+                <Boundary good>A claimed bait locks the vault and cancels any pending withdrawal, in the thief&apos;s own transaction.</Boundary>
+                <Boundary good>Only the recovery key can move a locked vault. The owner key can never unlock it.</Boundary>
+              </ul>
+            </div>
+            <div className="panel p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="lamp lamp-off" />
+                <span className="eyebrow !text-oxide-hi">Nchedo does not</span>
+              </div>
+              <ul className="space-y-3">
+                <Boundary>Stop an attacker who reads the code, ignores the bait, and waits out the delay. It gives you a public window; using it is your job.</Boundary>
+                <Boundary>Contain a sweeper that only takes the canary&apos;s gas and never claims. That is an alert, not containment.</Boundary>
+                <Boundary>Protect an EOA. No contract can freeze a wallet — Nchedo protects money you put in the vault.</Boundary>
+              </ul>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
       {/* ---- the honest part ---- */}
       <section className="mx-auto w-full max-w-6xl px-5 sm:px-8 pb-16 lg:pb-20">
         <Reveal>
@@ -426,7 +482,7 @@ export default function LandingPage() {
               className="font-[family-name:var(--font-display)] font-extrabold tracking-tighter leading-[1.02] text-balance mt-6"
               style={{ fontSize: "clamp(1.75rem, 3.4vw, 2.6rem)" }}
             >
-              The leak is not an if.
+              Treat the leak as a when, not an if.
             </h2>
             <p className="text-[14px] text-bone-dim mt-4 max-w-[46ch] mx-auto leading-relaxed">
               Build the vault before it happens: reserve, bait, and canary in one transaction on Monad
@@ -452,8 +508,10 @@ export default function LandingPage() {
                 Nchedo
               </span>
             </div>
-            <p className="text-[12px] text-steel mt-3 max-w-[36ch] leading-relaxed">
-              A vault whose key you can keep in <span className="datum text-bone-dim">.env</span> on purpose.
+            <p className="text-[12px] text-steel mt-3 max-w-[38ch] leading-relaxed">
+              <span className="text-bone-dim">Nchedo</span> (Igbo: <span className="italic">Nchèdọ</span>,
+              roughly &ldquo;N-cheh-doh&rdquo;) means <span className="text-bone-dim">protection</span>. It
+              does not stop every leak — it delays loss, exposes the theft, and contains a claimed bait.
             </p>
           </div>
           <div>
@@ -559,6 +617,17 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 
 function Tile({ className = "", children }: { className?: string; children: React.ReactNode }) {
   return <div className={`panel p-6 flex flex-col min-h-[180px] ${className}`}>{children}</div>;
+}
+
+function Boundary({ good, children }: { good?: boolean; children: React.ReactNode }) {
+  return (
+    <li className="flex gap-3 text-[13px] text-bone-dim leading-relaxed">
+      <span className={`shrink-0 datum ${good ? "text-sap" : "text-oxide-hi"}`} aria-hidden>
+        {good ? "✓" : "✕"}
+      </span>
+      <span>{children}</span>
+    </li>
+  );
 }
 
 function QueueRow({ amount, to, note, dead }: { amount: string; to: string; note: string; dead?: boolean }) {

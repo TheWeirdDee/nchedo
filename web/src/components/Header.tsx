@@ -39,6 +39,9 @@ export function Header() {
           <NavLink href="/create" active={pathname === "/create"}>
             New vault
           </NavLink>
+          <NavLink href="/recovery" active={pathname === "/recovery"}>
+            Recovery
+          </NavLink>
         </nav>
       )}
 
