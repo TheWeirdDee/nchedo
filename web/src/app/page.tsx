@@ -5,7 +5,7 @@ import Link from "next/link";
 import Lenis from "lenis";
 import { useAccount, useConnect } from "wagmi";
 import { Mark } from "@/components/Mark";
-import { monad, EXPLORER, addressUrl } from "@/lib/chain";
+import { monad, EXPLORER, addressUrl, REPO_URL } from "@/lib/chain";
 import { short, FACTORY_ADDRESS } from "@/lib/format";
 
 /**
@@ -64,8 +64,19 @@ export default function LandingPage() {
             <a href="#keys" className="eyebrow hover:!text-brass-hi transition-colors">
               The keys
             </a>
+            <Link href="/docs" className="eyebrow hover:!text-brass-hi transition-colors">
+              Docs
+            </Link>
           </nav>
           <div className="ml-auto flex items-center gap-4">
+            <a
+              href={REPO_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="eyebrow hover:!text-brass-hi transition-colors hidden sm:inline"
+            >
+              GitHub ↗
+            </a>
             <span className="datum text-[10px] text-steel/70 hidden sm:inline">
               {monad.name} · {monad.id}
             </span>
@@ -535,6 +546,21 @@ export default function LandingPage() {
                 <Link href="/create" className="text-bone-dim hover:text-brass-hi transition-colors">
                   New vault
                 </Link>
+              </li>
+              <li>
+                <Link href="/docs" className="text-bone-dim hover:text-brass-hi transition-colors">
+                  Docs
+                </Link>
+              </li>
+              <li>
+                <a
+                  href={REPO_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-bone-dim hover:text-brass-hi transition-colors"
+                >
+                  GitHub ↗
+                </a>
               </li>
             </ul>
           </div>

@@ -25,3 +25,5 @@ export const EXPLORER = monad.blockExplorers.default.url;
 
 export const txUrl = (hash: string) => `${EXPLORER}/tx/${hash}`;
 export const addressUrl = (address: string) => `${EXPLORER}/address/${address}`;
+
+export const REPO_URL = "https://github.com/TheWeirdDee/nchedo";

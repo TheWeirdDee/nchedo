@@ -6,6 +6,7 @@ import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { Mark } from "./Mark";
 import { useVault } from "@/hooks/useVault";
 import { short } from "@/lib/format";
+import { REPO_URL } from "@/lib/chain";
 
 /** Shared chrome across /, /panel and /create. Reads wallet + vault state
  *  itself so every route shows the same lamp, block number and connect control. */
@@ -40,21 +41,34 @@ export function Header() {
         A vault whose key you can keep in <span className="datum text-bone-dim">.env</span> on purpose
       </div>
 
-      {isConnected && (
-        <nav className="flex items-center gap-1 ml-1">
-          <NavLink href="/panel" active={pathname === "/panel"}>
-            Panel
-          </NavLink>
-          <NavLink href="/create" active={pathname === "/create"}>
-            New vault
-          </NavLink>
-          <NavLink href="/recovery" active={pathname === "/recovery"}>
-            Recovery
-          </NavLink>
-        </nav>
-      )}
+      <nav className="flex items-center gap-1 ml-1">
+        {isConnected && (
+          <>
+            <NavLink href="/panel" active={pathname === "/panel"}>
+              Panel
+            </NavLink>
+            <NavLink href="/create" active={pathname === "/create"}>
+              New vault
+            </NavLink>
+            <NavLink href="/recovery" active={pathname === "/recovery"}>
+              Recovery
+            </NavLink>
+          </>
+        )}
+        <NavLink href="/docs" active={pathname === "/docs"}>
+          Docs
+        </NavLink>
+      </nav>
 
       <div className="ml-auto flex items-center gap-4">
+        <a
+          href={REPO_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="eyebrow !text-steel/60 hover:!text-brass-hi hidden sm:inline"
+        >
+          GitHub ↗
+        </a>
         {v.vault && (
           <div className="flex items-center gap-2">
             <span className={`lamp ${locked ? "lamp-locked" : "lamp-armed"}`} />
