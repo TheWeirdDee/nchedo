@@ -104,7 +104,9 @@ export function AttackerConsole({
   }
 
   /** Owner-side demo convenience: when a fee spike outprices the dust, top the
-   *  canary up from the connected wallet so the trap stays springable. */
+   *  canary up from the connected wallet so the trap stays springable, then
+   *  spring it — feeding and claiming in one press so the flow never dead-ends
+   *  waiting for a second click. */
   async function feed() {
     if (!canary || !client || shortfall === null) return;
     setBusy(true);
@@ -113,13 +115,16 @@ export function AttackerConsole({
       await client.waitForTransactionReceipt({ hash: topUp });
       setShortfall(null);
       setErr(null);
-      onFired();
     } catch (e) {
       console.error("[nchedo] canary top-up failed:", e);
       setErr(explain(e));
-    } finally {
       setBusy(false);
+      return;
     }
+    // Fresh estimate + send now that the canary can afford it. take() manages
+    // its own busy state; a lingering spike simply resurfaces a new shortfall.
+    setBusy(false);
+    await take();
   }
 
   if (claimed) {
