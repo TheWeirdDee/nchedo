@@ -68,10 +68,19 @@ export function AttackerConsole({
       // Affordability with real numbers, not a guess. Fees come from the actual
       // base fee (+30% headroom), not viem's default 2× — the default doubles
       // the balance the canary needs for no reason.
-      const [gasLimit, block] = await Promise.all([
+      const [rawGas, block] = await Promise.all([
         client.estimateContractGas({ address: bait, abi: baitAbi, functionName: "claim", account }),
         client.getBlock(),
       ]);
+      // claim() is a bounded operation — a few SSTOREs, one lock(), one transfer,
+      // ~110k gas in practice. Some public RPCs pad estimateGas ~18×, and because
+      // a 1559 sender must reserve gas×maxFee up front (unused gas is refunded),
+      // that padding makes an easily-affordable claim look like it needs 0.26 MON.
+      // Cap the limit at a safe ceiling: real execution fits far under it, so the
+      // tx still succeeds, but the reserve stays proportional to real cost.
+      const CLAIM_GAS_CEILING = 300_000n;
+      const padded = (rawGas * 12n) / 10n;
+      const gasLimit = padded < CLAIM_GAS_CEILING ? padded : CLAIM_GAS_CEILING;
       const maxPriorityFeePerGas = 2_000_000_000n; // 2 gwei
       const maxFeePerGas = ((block.baseFeePerGas ?? 100_000_000_000n) * 13n) / 10n + maxPriorityFeePerGas;
       const cost = gasLimit * maxFeePerGas;
