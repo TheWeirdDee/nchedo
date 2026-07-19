@@ -1,7 +1,6 @@
 # Nchedo
 
-**Repo:** [github.com/TheWeirdDee/nchedo](https://github.com/TheWeirdDee/nchedo) · **Docs:** `/docs` on the running app (linked from its nav and footer)
-
+**Repo:** [github.com/TheWeirdDee/nchedo](https://github.com/TheWeirdDee/nchedo) · 
 **Nchedo** (Igbo: *Nchèdọ*, pronounced roughly "N-cheh-doh") means **protection**.
 
 The name is honest about the design. Nchedo does not pretend a private key can never leak. It assumes the leak may already have happened, and adds a layer that delays loss, exposes the theft, and locks the protected funds the moment the tripwire fires.
